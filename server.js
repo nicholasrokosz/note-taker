@@ -17,22 +17,26 @@ app.use(express.static("public"));
 ////////////////////////////////////////////////////////////////////
 // API Routes
 app.get("/api/notes", (req, res) => {
-  // res.sendFile(path.join(__dirname, "/db/db.json"));
-  res.json(notes);
+  res.sendFile(path.join(__dirname, "/db/db.json"));
+  // res.json(notes);
 });
 
 app.post("/api/notes", (req, res) => {
-  const notesds = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  const notes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
   const newNote = req.body;
   newNote.id = uuid.v4();
   notes.push(newNote);
   fs.writeFileSync("./db/db.json", JSON.stringify(notes));
-  console.log("it worked!");
   res.json(notes);
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-  const found = members.some((m) => m.id === +req.params.id);
+  const notes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  fs.writeFileSync(
+    "./db/db.json",
+    JSON.stringify(notes.filter((note) => note.id !== req.params.id))
+  );
+  res.json(notes);
 });
 
 ////////////////////////////////////////////////////////////////////
