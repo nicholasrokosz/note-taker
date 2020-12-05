@@ -11,6 +11,7 @@ const PORT = 5050;
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"));
 
 ////////////////////////////////////////////////////////////////////
 // API Routes
