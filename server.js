@@ -2,7 +2,8 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const uuid = require("uuid");
-const db = require("./db/db.json");
+const notes = require("./db/db.json");
+const { Console } = require("console");
 
 const app = express();
 const PORT = 5050;
@@ -15,19 +16,23 @@ app.use(express.static("public"));
 
 ////////////////////////////////////////////////////////////////////
 // API Routes
-app.get("/api/notes", function (req, res) {
-  res.json(db);
+app.get("/api/notes", (req, res) => {
+  // res.sendFile(path.join(__dirname, "/db/db.json"));
+  res.json(notes);
 });
 
-app.post("/api/notes", function (req, res) {
-  db.push(req.body);
-  res.send(db);
-  // const newNote = {
-  //   id: uuid.v4(),
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   status: "active",
-  // };
+app.post("/api/notes", (req, res) => {
+  const notesds = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
+  const newNote = req.body;
+  newNote.id = uuid.v4();
+  notes.push(newNote);
+  fs.writeFileSync("./db/db.json", JSON.stringify(notes));
+  console.log("it worked!");
+  res.json(notes);
+});
+
+app.delete("/api/notes/:id", (req, res) => {
+  const found = members.some((m) => m.id === +req.params.id);
 });
 
 ////////////////////////////////////////////////////////////////////
