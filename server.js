@@ -6,7 +6,7 @@ const notes = require("./db/db.json");
 const { Console } = require("console");
 
 const app = express();
-const PORT = 5050;
+var PORT = process.env.PORT || 3051;
 
 ////////////////////////////////////////////////////////////////////
 // Middleware
